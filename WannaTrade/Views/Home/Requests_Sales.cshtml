@@ -1,0 +1,868 @@
+﻿@{
+    ViewBag.Title = "Заявки";
+}
+<div class="b-popup" id="popup">
+    <div class="b-popup-content">
+
+    </div>
+</div>
+<div class="mainReq">
+    <div class="req_menu">
+        <h2 class="text_center">Продажа</h2><input class="buttonAdd" type="submit" value="Создать заявку" onClick="edit()">
+        <div id="sellT">
+            <div id="mainRowS">
+                <h3>Нет данных</h3>
+            </div>
+        </div>
+        <h2 class="text_center">Заявки на продажу</h2>
+        <div id="buyT">
+            <div class="rowDiv" id="mainRowB">
+                <h3>Нет данных</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var data1;
+    var data2;
+    let user;
+    let datas;
+    function load() {
+        var nameEQ = "user=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) data = c.substring(nameEQ.length, c.length);
+        }
+        user = data;
+        $('#popup').hide();
+        let sendingData = {
+            seller_name: data,
+            item_name: null,
+            request_price: 0,
+            tier_id: null,
+            category_id: null,
+            group_id: null,
+        }
+        sendingData = JSON.stringify(sendingData);
+        /*$.ajax({
+            url: '/Home/LoadTier/',
+            type: "POST"
+        }).done(function (dt) {
+            select = document.getElementById('typeTier');
+            var opt = document.createElement('option');
+            opt.value = null;
+            opt.innerHTML = "---";
+            select.appendChild(opt);
+            for (var i = 0; i < dt.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = dt[i].tier_id;
+                opt.innerHTML = dt[i].tier_name;
+                select.appendChild(opt);
+            }
+        })
+        $.ajax({
+            url: '/Home/LoadGroup/',
+            type: "POST"
+        }).done(function (dt) {
+            select = document.getElementById('typeCay');
+            var opt = document.createElement('option');
+            opt.value = 0;
+            opt.innerHTML = "---";
+            select.appendChild(opt);
+            for (var i = 0; i < dt.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = dt[i].group_id;
+                opt.innerHTML = dt[i].group_name;
+                select.appendChild(opt);
+            }
+        })
+        select = document.getElementById('typePod');
+        var opt = document.createElement('option');
+        opt.value = null;
+        opt.innerHTML = "---";
+        select.appendChild(opt);
+        */
+        $.ajax({
+            url: '/Home/LoadItemsSalesGen/',
+            type: "POST",
+            data: { sendData: sendingData }
+
+        }).done(function (data) {
+            if (data.length != 0) {
+                data1 = data;
+                let num = document.getElementById('mainRowS');
+                num.remove();
+                let div = document.createElement('div');
+                div.setAttribute('id', 'mainRowS')
+
+                let main = document.getElementById('sellT');
+                main.insertAdjacentElement('beforeend', div);
+
+                let table = document.createElement('table');
+                table.classList.add('rowTable');
+                div.insertAdjacentElement('beforeend', table);
+
+                let tr = document.createElement('tr');
+                tr.classList.add('rowDiv');
+                table.insertAdjacentElement('beforeend', tr);
+
+                let td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                let p = document.createElement('p');
+                p.textContent = "Название";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Тир";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Зачарование";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+
+                p = document.createElement('p');
+                p.textContent = "Цена";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Кол-во";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+
+
+                p = document.createElement('p');
+                p.textContent = "Покупатель";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Статус";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Кнопка";
+                td.insertAdjacentElement('beforeend', p);
+                for (let i = 0; i < data1.length; i++) {
+                    tr = document.createElement('tr');
+                    tr.classList.add('rowDiv');
+                    table.insertAdjacentElement('beforeend', tr);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data1[i]['item_name'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data1[i]['tier_name'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data1[i]['item_ench_lvl'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data1[i]['request_price'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data1[i]['request_number']; +
+                        td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    if (data1[i]['buyer_name'] == null) {
+                        p.textContent = "---";
+                    }
+                    else {
+                        p.textContent = data1[i]['buyer_name'];
+                    }
+                    td.insertAdjacentElement('beforeend', p);
+
+
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data1[i]['request_status'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    /*if (data[i]['request_status'] != "Подтвержден") {
+                        let input = document.createElement('input');
+                        input.textContent = "Кнопка";
+                        input.type = "button";
+                        input.value = "Редакт.";
+                        input.setAttribute("onclick", "edit(" + data1[i]['request_id'] + ")");
+                        input.classList.add('buyB');
+                        td.insertAdjacentElement('beforeend', input);
+                    }*/
+                    let input = document.createElement('input');
+                    input.textContent = "Кнопка";
+                    input.type = "button";
+                    input.value = "X";
+                    input.setAttribute("onclick", "del(" + data1[i]['request_id'] + ")");
+                    input.classList.add('buyB');
+                    td.insertAdjacentElement('beforeend', input);
+                }
+            }
+
+            //setAttribute("onclick", "remove_market_meta('MarkeID9')");
+
+        });
+        $.ajax({
+            url: '/Home/LoadItemsSales/',
+            type: "POST",
+            data: { sendData: sendingData }
+
+        }).done(function (data) {
+            if (data.length != 0) {
+                data2 = data;
+                let num = document.getElementById('mainRowB');
+                num.remove();
+                let div = document.createElement('div');
+                div.setAttribute('id', 'mainRowB')
+
+                let main = document.getElementById('buyT');
+                main.insertAdjacentElement('beforeend', div);
+
+                let table = document.createElement('table');
+                table.classList.add('rowTable');
+                div.insertAdjacentElement('beforeend', table);
+
+                let tr = document.createElement('tr');
+                tr.classList.add('rowDiv');
+                table.insertAdjacentElement('beforeend', tr);
+
+                let td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                let p = document.createElement('p');
+                p.textContent = "Название";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Тир";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Зачарование";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+
+                p = document.createElement('p');
+                p.textContent = "Цена";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Кол-во";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+
+
+                p = document.createElement('p');
+                p.textContent = "Покупатель";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Статус";
+                td.insertAdjacentElement('beforeend', p);
+
+                td = document.createElement('td');
+                tr.insertAdjacentElement('beforeend', td);
+
+                p = document.createElement('p');
+                p.textContent = "Кнопка";
+                td.insertAdjacentElement('beforeend', p);
+                for (let i = 0; i < data2.length; i++) {
+                    tr = document.createElement('tr');
+                    tr.classList.add('rowDiv');
+                    table.insertAdjacentElement('beforeend', tr);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data2[i]['item_name'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data2[i]['tier_name'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data2[i]['item_ench_lvl'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data2[i]['request_price'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data2[i]['request_number'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    p.textContent = data2[i]['buyer_name'];
+                    td.insertAdjacentElement('beforeend', p);
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    p = document.createElement('p');
+                    
+                    if (data[i]['request_status'] == "На рассмотрении") {
+                        p.textContent = "Принять?";
+                        td.insertAdjacentElement('beforeend', p);
+                        let input = document.createElement('input');
+                        input.textContent = "Кнопка";
+                        input.type = "button";
+                        input.value = "✓";
+                        input.setAttribute("onclick", "confirmBuy(" + data2[i]['request_id'] + ",1)");
+                        input.classList.add('buyB');
+                        td.insertAdjacentElement('beforeend', input);
+                        input = document.createElement('input');
+                        input.textContent = "Кнопка";
+                        input.type = "button";
+                        input.value = "Х";
+                        input.setAttribute("onclick", "confirmBuy(" + data2[i]['request_id'] + ",0)");
+                        input.classList.add('buyB');
+                        td.insertAdjacentElement('beforeend', input);
+                    }
+                    else {
+                        p.textContent = data2[i]['request_status'];
+                        td.insertAdjacentElement('beforeend', p);
+                    }
+                    
+
+                    td = document.createElement('td');
+                    tr.insertAdjacentElement('beforeend', td);
+
+                    /*if (data[i]['request_status'] != "Подтвержден") {
+                        let input = document.createElement('input');
+                        input.textContent = "Кнопка";
+                        input.type = "button";
+                        input.value = "Редакт.";
+                        input.setAttribute("onclick", "edit(" + data2[i]['request_id'] + ",1)");
+                        input.classList.add('buyB');
+                        td.insertAdjacentElement('beforeend', input);
+                    }*/
+                    let input = document.createElement('input');
+                    input.textContent = "Кнопка";
+                    input.type = "button";
+                    input.value = "X";
+                    input.setAttribute("onclick", "del(" + data2[i]['request_id'] + ")");
+                    input.classList.add('buyB');
+                    td.insertAdjacentElement('beforeend', input);
+                }
+            }
+            //setAttribute("onclick", "remove_market_meta('MarkeID9')");
+
+        })
+    }
+    function closePopup() {
+        $('#popup').hide();
+    }
+    function edit() {
+        let num = document.querySelector('.b-popup-content');
+        num.remove();
+        let div = document.createElement('div');
+        div.classList.add('b-popup-content');
+        let main = document.querySelector('.b-popup');
+        main.insertAdjacentElement('beforeend', div);
+
+        let input = document.createElement('input');
+        input.classList.add('closeBut');
+        input.type = "button";
+        input.value = "Х";
+        input.setAttribute("onclick", "closePopup()");
+
+        div.insertAdjacentElement('beforeend', input);
+
+
+        let table1 = document.createElement('table');
+        table1.classList.add('buyTable');
+        div.insertAdjacentElement('beforeend', table1);
+
+        tr = document.createElement('tr');
+        tr.setAttribute("VALIGN", "TOP");
+        table1.insertAdjacentElement('beforeend', tr);
+
+        td = document.createElement('td');
+        tr.insertAdjacentElement('beforeend', td);
+
+        p = document.createElement('p');
+        p.textContent = "Категория";
+        p.classList.add('menu_left_elem');
+        td.insertAdjacentElement('beforeend', p);
+
+        let select = document.createElement('select');
+        select.classList.add('menu_left_elem');
+        select.id = "typeCay";
+        select.setAttribute("onchange", "typePodRefresh()");
+        td.insertAdjacentElement('beforeend', select);
+
+        $.ajax({
+            url: '/Home/LoadGroup/',
+            type: "POST"
+        }).done(function (dt) {
+            var opt = document.createElement('option');
+            opt.value = null;
+            opt.innerHTML = "---";
+            select.appendChild(opt);
+            for (var i = 0; i < dt.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = dt[i].group_id;
+                opt.innerHTML = dt[i].group_name;
+                select.appendChild(opt);
+            }
+        })
+
+
+
+        p = document.createElement('p');
+        p.textContent = "Подкатегория";
+        p.classList.add('menu_left_elem');
+        p.id = "pod";
+        td.insertAdjacentElement('beforeend', p);
+
+        let select1 = document.createElement('select');
+        select1.classList.add('menu_left_elem');
+        select1.id = "typePod";
+        select1.setAttribute("onchange", "rePaint(0)");
+        td.insertAdjacentElement('beforeend', select1);
+
+
+
+        p = document.createElement('p');
+        p.textContent = "Тир";
+        p.classList.add('menu_left_elem');
+        td.insertAdjacentElement('beforeend', p);
+
+        let select3 = document.createElement('select');
+        select3.classList.add('menu_left_elem');
+        select3.id = "nameIn";
+        select3.setAttribute("onchange", "rePaint(0)");
+        td.insertAdjacentElement('beforeend', select3);
+
+        $.ajax({
+            url: '/Home/LoadTier/',
+            type: "POST"
+        }).done(function (dt) {
+            var opt = document.createElement('option');
+            opt.value = null;
+            opt.innerHTML = "---";
+            select3.appendChild(opt);
+            for (var i = 0; i < dt.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = dt[i].tier_id;
+                opt.innerHTML = dt[i].tier_name;
+                select3.appendChild(opt);
+            }
+        })
+
+
+
+        p = document.createElement('p');
+        p.textContent = "Зачарование";
+        p.classList.add('menu_left_elem');
+        td.insertAdjacentElement('beforeend', p);
+
+        let select4 = document.createElement('select');
+        select4.classList.add('menu_left_elem');
+        select4.id = "enchIn";
+        select4.setAttribute("onchange", "rePaint(0)");
+        td.insertAdjacentElement('beforeend', select4);
+
+        var opt = document.createElement('option');
+        opt.value = -1;
+        opt.innerHTML = "---";
+        select4.appendChild(opt);
+        for (var i = 0; i < 4; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = i;
+            select4.appendChild(opt);
+        }
+
+
+
+        p = document.createElement('p');
+        p.textContent = "Цена";
+        p.classList.add('menu_left_elem');
+        td.insertAdjacentElement('beforeend', p);
+
+        input = document.createElement('input');
+        input.classList.add('numwin');
+        input.setAttribute("value", 0);
+        input.setAttribute("min", 0);
+        input.setAttribute("max", 150000000);
+        input.type = "number";
+
+        input.id = "priceBuy";
+
+        td.insertAdjacentElement('beforeend', input);
+
+
+        p = document.createElement('p');
+        p.textContent = "Кол-во";
+        p.classList.add('menu_left_elem');
+        td.insertAdjacentElement('beforeend', p);
+
+        input = document.createElement('input');
+        input.classList.add('numwin');
+        input.type = "number";
+
+        input.id = "numBuy";
+        input.setAttribute("value", 0);
+        input.setAttribute("min", 0);
+        input.setAttribute("max",10000);
+
+        td.insertAdjacentElement('beforeend', input);
+
+
+
+        input = document.createElement('input');
+        input.classList.add('menu_left_elem');
+        input.type = "button";
+        input.value = "Сохранить";
+        input.setAttribute("onclick", "add()");
+
+        td.insertAdjacentElement('beforeend', input);
+
+        let br = document.createElement('br');
+
+        let div3 = document.createElement('div');
+        div3.classList.add('chart');
+        div3.id = "chartContainer";
+
+        td = document.createElement('td');
+        tr.insertAdjacentElement('beforeend', td);
+
+        td.insertAdjacentElement('beforeend', div3);
+
+        let div2 = document.createElement('div');
+        div.insertAdjacentElement('beforeend', div2);
+
+        let label = document.createElement('label');
+        label.innerText = "День";
+
+        input = document.createElement('input');
+        input.classList.add('radioLeft');
+        input.checked = true;
+        input.type = "radio";
+        input.name = "time";
+        input.id = "contactChoice1";
+        input.setAttribute("onchange", "rePaint(0)");
+        input.setAttribute("value", 0);
+
+        div2.insertAdjacentElement('beforeend', input);
+        div2.insertAdjacentElement('beforeend', label);
+        div2.insertAdjacentElement('beforeend', br);
+
+        br = document.createElement('br');
+
+        label = document.createElement('label');
+        label.innerText = "Неделя";
+
+        input = document.createElement('input');
+        input.classList.add('radioLeft');
+        input.type = "radio";
+        input.name = "time";
+        input.id = "contactChoice2";
+        input.setAttribute("onchange", "rePaint(1)");
+        input.setAttribute("value", 1);
+
+        div2.insertAdjacentElement('beforeend', input);
+        div2.insertAdjacentElement('beforeend', label);
+        div2.insertAdjacentElement('beforeend', br);
+
+        br = document.createElement('br');
+
+        label = document.createElement('label');
+        label.innerText = "Месяц";
+
+        input = document.createElement('input');
+        input.classList.add('radioLeft');
+        input.type = "radio";
+        input.name = "time";
+        input.id = "contactChoice3";
+        input.setAttribute("onchange", "rePaint(2)");
+        input.setAttribute("value", 2);
+
+        div2.insertAdjacentElement('beforeend', input);
+        div2.insertAdjacentElement('beforeend', label);
+        div2.insertAdjacentElement('beforeend', br);
+
+        $('#popup').show();
+        rePaint(0);
+    }
+    // dragElement(document.getElementById(("popup")));
+    function change(ind) {
+        let price = document.getElementById('priceBuy');
+        let num = document.getElementById('numBuy');
+        let range = document.getElementById('rangeBuy');
+        if (ind == 1) {
+            if (price.value > datas['request_price'] * datas['request_number']) {
+                num.value = datas['request_number'];
+                range.value = datas['request_number'];
+                price.value = datas['request_price'] * datas['request_number'];
+            }
+            else {
+                num.value = datas['request_price'] * datas['request_number'] / price.value;
+                range.value = num.value;
+                price.value = datas['request_price'] * num.value;
+            }
+        }
+        else if (ind == 2) {
+            if (num.value > datas['request_number']) {
+                num.value = datas['request_number'];
+                range.value = datas['request_number'];
+                price.value = datas['request_price'] * datas['request_number'];
+            }
+            else {
+                range.value = num.value;
+                price.value = datas['request_price'] * num.value;
+            }
+        }
+        else {
+            if (range.value > datas['request_number']) {
+                num.value = datas['request_number'];
+                range.value = datas['request_number'];
+                price.value = datas['request_price'] * datas['request_number'];
+            }
+            else {
+                num.value = range.value;
+                price.value = datas['request_price'] * num.value;
+            }
+        }
+    }
+    function confirmBuy(ind, cass) {
+            $.ajax({
+                url: '/Home/ConfirmBuy/',
+                type: "POST",
+                data: { request_id:ind, cass:cass }
+            }).done(function (dt) {
+                location.reload();
+            });
+        
+
+    }
+    function add() {
+        if ((document.getElementById('numBuy').value > 0) && (document.getElementById('priceBuy').value > 0) && (document.getElementById('typePod').value > 0) && (document.getElementById('nameIn').value > 0) && (document.getElementById('enchIn').value > -1)) {
+            let sendingData = {
+                category_id: document.getElementById('typePod').value,
+                tier_id: document.getElementById('nameIn').value,
+                request_number: document.getElementById('numBuy').value,
+                request_price: document.getElementById('priceBuy').value,
+                request_seller: user,
+                ench_lvl: document.getElementById('enchIn').value,
+            }
+            sendingData = JSON.stringify(sendingData);
+            $.ajax({
+                url: '/Home/SaleAdd/',
+                type: "POST",
+                data: { sendData: sendingData }
+            }).done(function (dt) {
+                if (dt == "error1") {
+                    alert('Такого предмета не нашлось. Проверьте поля!');
+                }
+                else {
+                    alert('Заявка создана');
+                    closePopup();
+                }
+                
+            });
+        }
+        else {
+            alert('Неверные данные');
+        }
+    }
+    function typePodRefresh() {
+        let num2 = document.querySelector('#typePod');
+        let group = document.querySelector('#typeCay');
+        num2.remove();
+        num2 = document.querySelector('#pod');
+        let select = document.createElement('select');
+        select.id = "typePod";
+        select.classList.add('menu_left_elem');
+        $.ajax({
+            url: '/Home/LoadCategory/',
+            type: "POST",
+            data: { val: group.value }
+        }).done(function (dt) {
+            var opt = document.createElement('option');
+            opt.value = null;
+            opt.innerHTML = "---";
+            select.appendChild(opt);
+            for (var i = 0; i < dt.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = dt[i].category_id;
+                opt.innerHTML = dt[i].category_name;
+                select.appendChild(opt);
+            }
+        })
+        num2.insertAdjacentElement('afterend', select);
+    }
+    function del(req_id) {
+        let sendingData = {
+            req_id: req_id
+        }
+        sendingData = JSON.stringify(sendingData);
+        $.ajax({
+            url: '/Home/SaleDelete/',
+            type: "POST",
+            data: { sendData: sendingData }
+        }).done(function (dt) {
+            
+        })
+    }
+    function rePaint(casetime) {
+        let dataStats;
+        if ((document.getElementById('typePod').value > 0) && (document.getElementById('nameIn').value > 0) && (document.getElementById('enchIn').value > -1)) {
+            let sendingData = {
+                timeCase: casetime,
+                request_item_id: -1,
+                category_id: document.getElementById('typePod').value,
+                ench_lvl: document.getElementById('enchIn').value,
+                tier_id: document.getElementById('nameIn').value,
+            }
+            let xVal;
+            switch (casetime) {
+                case 0: {
+                    xVal = "HH:MM";
+                    break;
+                }
+                case 1: {
+                    xVal = "DD MMM HH:MM"
+                    break;
+                }
+                case 2: {
+                    xVal = "DD MMM"
+                    break;
+                }
+            }
+            sendingData = JSON.stringify(sendingData);
+            $.ajax({
+                url: '/Home/StatsGet/',
+                type: "POST",
+                data: { sendData: sendingData }
+            }).done(function (dt) {
+                dataStats = dt;
+                for (item in dataStats) {
+                    dataStats[item]['x'] = new Date(dataStats[item]['x']);
+                }
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    animationEnabled: true,
+                    title: {
+                        text: "Цена на предмет"
+                    },
+                    axisX: {
+                        valueFormatString: xVal,
+                        crosshair: {
+                            enabled: true,
+                            snapToDataPoint: true
+                        }
+                    },
+                    axisY: {
+                        title: "Серебро",
+                        valueFormatString: "##0.00",
+                        crosshair: {
+                            enabled: true,
+                            snapToDataPoint: true,
+                            labelFormatter: function (e) {
+                                return CanvasJS.formatNumber(e.value, "##0.00");
+                            }
+                        }
+                    },
+                    data: [{
+                        type: "line",
+                        xValueFormatString: xVal,
+                        yValueFormatString: "##0.00",
+                        dataPoints: dataStats,
+                    }]
+                });
+                chart.render();
+            })
+        }  
+    }
+        
+
+
+
+</script>

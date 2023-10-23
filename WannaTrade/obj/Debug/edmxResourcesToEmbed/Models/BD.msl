@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище WannaTradeModelContainer" CdmEntityContainer="WannaTradeEntities1">
+    <EntitySetMapping Name="Category">
+      <EntityTypeMapping TypeName="WannaTradeModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="category_group_id" ColumnName="category_group_id" />
+          <ScalarProperty Name="category_name" ColumnName="category_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Group">
+      <EntityTypeMapping TypeName="WannaTradeModel.Group">
+        <MappingFragment StoreEntitySet="Group">
+          <ScalarProperty Name="group_id" ColumnName="group_id" />
+          <ScalarProperty Name="group_name" ColumnName="group_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Item">
+      <EntityTypeMapping TypeName="WannaTradeModel.Item">
+        <MappingFragment StoreEntitySet="Item">
+          <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+          <ScalarProperty Name="item_id" ColumnName="item_id" />
+          <ScalarProperty Name="item_name" ColumnName="item_name" />
+          <ScalarProperty Name="item_tier_id" ColumnName="item_tier_id" />
+          <ScalarProperty Name="item_category_id" ColumnName="item_category_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Request">
+      <EntityTypeMapping TypeName="WannaTradeModel.Request">
+        <MappingFragment StoreEntitySet="Request">
+          <ScalarProperty Name="request_accept_date" ColumnName="request_accept_date" />
+          <ScalarProperty Name="request_creation_date" ColumnName="request_creation_date" />
+          <ScalarProperty Name="request_status" ColumnName="request_status" />
+          <ScalarProperty Name="request_id" ColumnName="request_id" />
+          <ScalarProperty Name="request_item_id" ColumnName="request_item_id" />
+          <ScalarProperty Name="request_number" ColumnName="request_number" />
+          <ScalarProperty Name="request_price" ColumnName="request_price" />
+          <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+          <ScalarProperty Name="request_is_on_sale" ColumnName="request_is_on_sale" />
+          <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+          <ScalarProperty Name="request_is_seller_confirmed" ColumnName="request_is_seller_confirmed" />
+          <ScalarProperty Name="request_is_buyer_confirmed" ColumnName="request_is_buyer_confirmed" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tier">
+      <EntityTypeMapping TypeName="WannaTradeModel.Tier">
+        <MappingFragment StoreEntitySet="Tier">
+          <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+          <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User">
+      <EntityTypeMapping TypeName="WannaTradeModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="user_pass" ColumnName="user_pass" />
+          <ScalarProperty Name="user_email" ColumnName="user_email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sale">
+      <EntityTypeMapping TypeName="WannaTradeModel.Sale">
+        <MappingFragment StoreEntitySet="Sale">
+          <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+          <ScalarProperty Name="sale_request_id" ColumnName="sale_request_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="User_check" FunctionName="Хранилище WannaTradeModel.User_check" />
+    <FunctionImportMapping FunctionImportName="User_reg" FunctionName="Хранилище WannaTradeModel.User_reg" />
+    <EntitySetMapping Name="Message">
+      <EntityTypeMapping TypeName="WannaTradeModel.Message">
+        <MappingFragment StoreEntitySet="Message">
+          <ScalarProperty Name="message_date" ColumnName="message_date" />
+          <ScalarProperty Name="message_value" ColumnName="message_value" />
+          <ScalarProperty Name="message_reciever_id" ColumnName="message_reciever_id" />
+          <ScalarProperty Name="message_sender_id" ColumnName="message_sender_id" />
+          <ScalarProperty Name="message_id" ColumnName="message_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Items_load" FunctionName="Хранилище WannaTradeModel.Items_load">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Result">
+          <ScalarProperty Name="request_number" ColumnName="request_number" />
+          <ScalarProperty Name="request_price" ColumnName="request_price" />
+          <ScalarProperty Name="item_name" ColumnName="item_name" />
+          <ScalarProperty Name="request_id" ColumnName="request_id" />
+          <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+          <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+          <ScalarProperty Name="item_id" ColumnName="item_id" />
+          <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="group_id" ColumnName="group_id" />
+          <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+          <ScalarProperty Name="request_status" ColumnName="request_status" />
+          <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+          <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+          <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Category_load" FunctionName="Хранилище WannaTradeModel.Category_load">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Category_load_Result">
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="category_group_id" ColumnName="category_group_id" />
+          <ScalarProperty Name="category_name" ColumnName="category_name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Group_load" FunctionName="Хранилище WannaTradeModel.Group_load">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Group_load_Result">
+          <ScalarProperty Name="group_id" ColumnName="group_id" />
+          <ScalarProperty Name="group_name" ColumnName="group_name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Tier_Load" FunctionName="Хранилище WannaTradeModel.Tier_Load">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Tier_Load_Result">
+          <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+          <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Sale_Ins" FunctionName="Хранилище WannaTradeModel.Sale_Ins" />
+    <FunctionImportMapping FunctionImportName="Items_load_Buys" FunctionName="Хранилище WannaTradeModel.Items_load_Buys">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Buys_Result">
+          <ScalarProperty Name="request_id" ColumnName="request_id" />
+          <ScalarProperty Name="request_number" ColumnName="request_number" />
+          <ScalarProperty Name="request_price" ColumnName="request_price" />
+          <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+          <ScalarProperty Name="request_status" ColumnName="request_status" />
+          <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+          <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+          <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+          <ScalarProperty Name="item_name" ColumnName="item_name" />
+          <ScalarProperty Name="item_id" ColumnName="item_id" />
+          <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+          <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="group_id" ColumnName="group_id" />
+          <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Items_load_Sales" FunctionName="Хранилище WannaTradeModel.Items_load_Sales">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Sales_Result">
+          <ScalarProperty Name="request_id" ColumnName="request_id" />
+          <ScalarProperty Name="request_number" ColumnName="request_number" />
+          <ScalarProperty Name="request_price" ColumnName="request_price" />
+          <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+          <ScalarProperty Name="request_status" ColumnName="request_status" />
+          <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+          <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+          <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+          <ScalarProperty Name="item_name" ColumnName="item_name" />
+          <ScalarProperty Name="item_id" ColumnName="item_id" />
+          <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+          <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="group_id" ColumnName="group_id" />
+          <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Items_load_Sales_Gen" FunctionName="Хранилище WannaTradeModel.Items_load_Sales_Gen">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Sales_Gen_Result">
+          <ScalarProperty Name="request_id" ColumnName="request_id" />
+          <ScalarProperty Name="request_number" ColumnName="request_number" />
+          <ScalarProperty Name="request_price" ColumnName="request_price" />
+          <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+          <ScalarProperty Name="request_status" ColumnName="request_status" />
+          <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+          <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+          <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+          <ScalarProperty Name="item_name" ColumnName="item_name" />
+          <ScalarProperty Name="item_id" ColumnName="item_id" />
+          <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+          <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="group_id" ColumnName="group_id" />
+          <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="Buy_Confirm" FunctionName="Хранилище WannaTradeModel.Buy_Confirm" />
+    <FunctionImportMapping FunctionImportName="Sale_Add" FunctionName="Хранилище WannaTradeModel.Sale_Add" />
+    <FunctionImportMapping FunctionImportName="Sale_Delete" FunctionName="Хранилище WannaTradeModel.Sale_Delete" />
+    <FunctionImportMapping FunctionImportName="Stats_Get" FunctionName="Хранилище WannaTradeModel.Stats_Get">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="WannaTradeModel.Stats_Get_Result">
+          <ScalarProperty Name="x" ColumnName="x" />
+          <ScalarProperty Name="y" ColumnName="y" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

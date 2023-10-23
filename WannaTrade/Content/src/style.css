@@ -1,0 +1,426 @@
+@keyframes wiggle
+ {
+    0% { transform: rotate(0deg); }
+   25% { transform: rotate(1deg); }
+   50% { transform: rotate(-1deg); }
+   75% { transform: rotate(1deg); }
+   100% { transform: rotate(0deg); }
+}
+@keyframes desplaçament {
+	from { text-shadow: 0 0 #FF4BA8; }
+	to { text-shadow: .15em .15em #FF4BA8; }
+}
+@keyframes color {
+	from { color: #00E5F8; }
+	to { color: #0CACA6; }
+}
+@keyframes rotacio {
+	from { transform: rotate(-2deg); }
+	to { transform: rotate(2deg); }
+}
+body{
+  background: linear-gradient(5deg, #10075a,#0c8999 ) fixed;
+}
+h2{
+  font-size:150%;
+}
+h3{
+  font-size:130%;
+}
+.hadd{
+  margin-left: 0px;
+  font-size:120%;
+}
+.ptext{
+  font-size:130%;
+}
+.padd {
+    margin-left: 20px;
+    font-size: 130%;
+}
+.header{
+  position: fixed;
+}
+.icon-marks_a {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.icon-marks_me 
+{
+  width:500px;
+  height:400px;
+  margin-left: 10px;
+}
+.nav_bar_ul {
+    list-style-type: none;
+    overflow: hidden;
+    border: 2px solid grey;
+    background: linear-gradient(5deg, #0cbfcc, #102b85);
+  }
+.nav_bar_li {
+    float: right;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .nav_bar_logo {
+    float: left;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .plus {
+    float: right;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .logo
+{
+  width:50px;
+  height:50px;
+  margin-top: 0px;
+  font-size:150%;
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+}
+  
+.menu {
+    
+    margin-top: 13px;
+    font-size:150%;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  .menu_vert_ul {
+    list-style-type: none;
+    margin: 20px;
+    padding: 0;
+    overflow: hidden;
+    font-size:150%;
+    color: black;
+    
+  }
+.menu_left_elem {
+    width: 80% !important;
+    margin-left: 5%;
+}
+.chart {
+    width: 100%;
+    height: 20%;
+    margin-left: 5%;
+}
+.numwin {
+    width: 60% !important;
+    margin-left: 5%;
+}
+.rowD {
+    margin: 10px;
+    width: 100%;
+}
+.itemDiv {
+    width: 97%;
+    height: 46px;
+    background: url('../img/row.png') no-repeat;
+    background-size: 100%;
+    text-align: center;
+    border-radius: 20px;
+}
+.rowDiv {
+    width: auto;
+    height: 15%;
+    background-color: aqua;
+    background-size: 100%;
+    text-align: center;
+    border-radius: 20px;
+    border: 2px solid grey;
+    margin:3%;
+}
+.pages {
+    width: 97%;
+    height: 36px;
+    font-size:160%;
+    text-align: center;
+    border-radius: 20px;
+    display:inline;
+    margin:10px;
+}
+.text_center {
+    text-align: center;
+}
+  .nav_bar_li :hover {
+    animation: wiggle 0s infinite;
+  }
+  .menu_vert_ul :hover {
+    animation: wiggle 1.5s infinite;
+  }
+  .menu_vert{
+    background-color: rgba(255, 255, 255, 0.575);
+    float:left;
+    width:15%;
+    height: 89%;
+    margin-left:1%;
+    border: 2px solid grey;
+  }
+.tablereg {
+    padding: 0;
+    display: inline-block;
+    vertical-align: text-top;
+    border-spacing: 30px 30px;
+}
+.login_area {
+    background-color: rgba(255, 255, 255, 0.575);
+    width: 30%;
+    margin-left: 35%;
+    margin-top: 8%;
+    border: 2px solid grey;
+}
+.login_win {
+    background-color: rgba(255, 255, 255, 0.575);
+    height: 40%;
+    text-align:center;
+}
+.reg_win {
+    background-color: rgba(255, 255, 255, 0.575);
+    height: 40%;
+}
+.text_left{
+    margin-left:20px;
+}
+.main {
+    margin-top: 20px;
+    height: 850px;
+}
+.mainSearch {
+    margin-top: 20px;
+    height: 850px;
+    display:inline-flex;
+    width:100%;
+
+}
+.mainReq {
+    margin-top: 20px;
+    height: auto;
+    width: 100%;
+}
+.main1 {
+    background-color: rgba(255, 255, 255, 0.575);
+    width: 95%;
+    margin-right: 1%;
+    border: 2px solid grey;
+    height: auto;
+}
+  .main2{
+    background-color: rgba(255, 255, 255, 0.575);
+    float:right; width:82%;
+    height: 36.5%;
+    margin-top:1%;
+    margin-right:1%;
+    border: 2px solid grey;
+  }
+  .main_me{
+    background-color: rgba(255, 255, 255, 0.575);
+    float:right; width:82%;
+    height: auto;
+    margin-right:1%;
+    border: 2px solid grey;
+    margin-bottom:40px;
+  }
+.addingTable {
+    border-spacing: 20px;
+    margin: 2%;
+}
+.buyTable {
+    border-spacing: 20px;
+    margin: 2%;
+    margin-top: 5%;
+    width:30%;
+}
+.rowTable {
+    border-collapse: separate;
+    border-spacing: 0px 10px;
+    width: 97%;
+    margin: 1%;
+}
+  .tdIn{
+    width: 200px;
+  }
+  .text_main{
+    /* display: flex; */
+  /* align-items: left; */
+	/* justify-content: left; */
+	margin: 1% 2%;
+	width: 15%;
+	font-size: 2em;
+	/* font-weight: 500; */
+	text-transform: uppercase;
+	line-height: 1.0em;
+	animation-name: desplaçament, color, rotacio;
+	animation-duration: 2s, 1s, 3s;
+	animation-timing-function: ease-in, ease-out, ease-in-out;
+	animation-iteration-count: infinite;
+  animation-direction: alternate;
+  }
+  .news_elem{
+    font-size:80%;
+    margin-left: 50px;
+  }
+  footer{
+    background-color: #2798b4;
+   position: fixed;
+   right: 0;
+   bottom: 0;
+   text-align: center; 
+   width: 100%;   
+   font-size: 19px;
+  /* font-weight: bold; */
+  color: #000000;
+  }
+  .table1{
+    padding: 0;
+    display:inline-block;
+    vertical-align: text-top;
+    border-spacing: 30px 11px;
+  }
+.tablebut {
+    padding: 0;
+    display: inline-block;
+    vertical-align: text-top;
+    border-spacing: 30px 11px;
+    margin-left:10px;
+    float: left;
+}
+.buyB {
+    margin-top: 0px;
+    display: inline-block;
+    vertical-align: text-top;
+    border-spacing: 30px 11px;
+}
+  .textDesc{
+    font-size: 120%;
+  }
+  .borders{
+    border: 2px solid grey;
+    width: 90%;
+    margin: 10px;
+  }
+  .search_menu{
+    background-color: rgba(255, 255, 255, 0.575);
+    float:right; width:82%;
+    height: 100%;
+    margin-right:1%;
+    border: 2px solid grey;
+    display:block;
+
+  }
+.req_menu {
+    background-color: rgba(255, 255, 255, 0.575);
+    float: right;
+    width: 100%;
+    height: 100%;
+    border: 2px solid grey;
+    display: block;
+}
+.request_menu {
+    background-color: rgba(255, 255, 255, 0.575);
+    float: right;
+    width: 100%;
+    height: auto;
+    margin-right: 1%;
+    border: 2px solid grey;
+    display: block;
+}
+  .result_menu{
+    background-color: rgba(255, 255, 255, 0.575);
+    float:right; width:82%;
+    height: auto;
+    margin-top:1%;
+    margin-right:1%;
+    margin-bottom:40px;
+    border: 2px solid grey;
+  }
+  .menu_ul {
+    overflow: hidden;
+    font-size:150%;
+    color: black;
+    float: left;
+    margin-right: 20px;
+  }
+.menuSearch {
+    overflow: hidden;
+    font-size: 150%;
+    color: black;
+    float: left;
+    margin-right: 20px;
+    background-color: rgba(255, 255, 255, 0.575);
+}
+  .search_text{
+    margin-top:1%;
+    margin-left:30px;
+    margin-bottom:20px;
+    font-size:150%;
+  }
+  .buttonAdd{
+    margin-left:20px;
+    font-size:120%;
+  }
+  .buttonBuy{
+    margin-left:30px;
+    font-size:150%;
+  }
+  label{
+    font-size:large;
+  }
+  .btn_footer{
+    background-color: #5c1b9d;
+    text-align: center; 
+    margin: 15px;
+    cursor: pointer;
+  }
+  .btn_search{
+    /* background-color: #5c1b9d; */
+    text-align: center; 
+    margin: 15px;
+    font-size:100%;
+    cursor: pointer;
+  }
+  .btn{
+    padding: 10px;
+    margin-left: 30px;
+    color: white;
+    background-color: #333;
+    font-size: 15;
+    cursor: pointer;
+    outline: none;
+  }
+.b-popup {
+    width: 40%;
+    min-height: 100%;
+    overflow: hidden;
+    position: fixed;
+    height: 60%;
+    margin-top: 6%;
+    margin-left: 10%;
+}
+
+.b-popup-content {
+    height: 65%;
+    padding: 10px;
+    background-color: darkseagreen;
+    border-radius: 10px;
+    border: 2px solid grey;
+    box-shadow: 0px 0px 10px #000;
+}
+.closeBut{
+    float:right;
+}
+.confirmBut{
+    float: left;
+    margin-right: 20px;
+    block-size:auto;
+    font-size:130%;
+}
+.radioLeft {
+    margin-left: 20px !important;
+}

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище WannaTradeModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="category_group_id" Type="int" Nullable="false" />
+    <Property Name="category_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="group_id" />
+    </Key>
+    <Property Name="group_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="group_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="item_id" />
+    </Key>
+    <Property Name="item_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="item_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="item_tier_id" Type="int" Nullable="false" />
+    <Property Name="item_category_id" Type="int" Nullable="false" />
+    <Property Name="item_ench_lvl" Type="int" />
+  </EntityType>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="message_id" />
+    </Key>
+    <Property Name="message_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="message_sender_id" Type="int" Nullable="false" />
+    <Property Name="message_reciever_id" Type="int" Nullable="false" />
+    <Property Name="message_value" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="message_date" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Request">
+    <Key>
+      <PropertyRef Name="request_id" />
+    </Key>
+    <Property Name="request_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="request_item_id" Type="int" Nullable="false" />
+    <Property Name="request_number" Type="int" Nullable="false" />
+    <Property Name="request_price" Type="int" Nullable="false" />
+    <Property Name="request_seller_id" Type="int" Nullable="false" />
+    <Property Name="request_is_on_sale" Type="bit" Nullable="false" />
+    <Property Name="request_buyer_id" Type="int" />
+    <Property Name="request_is_seller_confirmed" Type="bit" />
+    <Property Name="request_is_buyer_confirmed" Type="bit" />
+    <Property Name="request_status" Type="nvarchar" MaxLength="50" />
+    <Property Name="request_creation_date" Type="datetime" />
+    <Property Name="request_accept_date" Type="datetime" />
+  </EntityType>
+  <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "WannaTrade.dbo.Sale" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+  <EntityType Name="Sale">
+    <Key>
+      <PropertyRef Name="sale_id" />
+      <PropertyRef Name="sale_request_id" />
+    </Key>
+    <Property Name="sale_id" Type="int" Nullable="false" />
+    <Property Name="sale_request_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Tier">
+    <Key>
+      <PropertyRef Name="tier_id" />
+    </Key>
+    <Property Name="tier_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tier_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="user_pass" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="user_email" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Function Name="Buy_Confirm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="request_id" Type="int" Mode="In" />
+    <Parameter Name="cass" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Category_load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="group_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Group_load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="Items_load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_tier" Type="int" Mode="In" />
+    <Parameter Name="item_price" Type="int" Mode="In" />
+    <Parameter Name="item_group" Type="int" Mode="In" />
+    <Parameter Name="item_category" Type="int" Mode="In" />
+    <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Items_load_Buys" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_tier" Type="int" Mode="In" />
+    <Parameter Name="item_price" Type="int" Mode="In" />
+    <Parameter Name="item_group" Type="int" Mode="In" />
+    <Parameter Name="item_category" Type="int" Mode="In" />
+    <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Items_load_Sales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_tier" Type="int" Mode="In" />
+    <Parameter Name="item_price" Type="int" Mode="In" />
+    <Parameter Name="item_group" Type="int" Mode="In" />
+    <Parameter Name="item_category" Type="int" Mode="In" />
+    <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Items_load_Sales_Gen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+    <Parameter Name="item_tier" Type="int" Mode="In" />
+    <Parameter Name="item_price" Type="int" Mode="In" />
+    <Parameter Name="item_group" Type="int" Mode="In" />
+    <Parameter Name="item_category" Type="int" Mode="In" />
+    <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Sale_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="category_id" Type="int" Mode="In" />
+    <Parameter Name="tier_id" Type="int" Mode="In" />
+    <Parameter Name="request_number" Type="int" Mode="In" />
+    <Parameter Name="request_price" Type="int" Mode="In" />
+    <Parameter Name="ench_lvl" Type="int" Mode="In" />
+    <Parameter Name="request_seller" Type="nvarchar(max)" Mode="In" />
+  </Function>
+  <Function Name="Sale_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="request_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Sale_Ins" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="request_item_id" Type="int" Mode="In" />
+    <Parameter Name="request_number" Type="int" Mode="In" />
+    <Parameter Name="request_price" Type="int" Mode="In" />
+    <Parameter Name="request_seller_id" Type="int" Mode="In" />
+    <Parameter Name="request_buyer" Type="nvarchar" Mode="In" />
+    <Parameter Name="request_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Stats_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="timecase" Type="int" Mode="In" />
+    <Parameter Name="request_item_id" Type="int" Mode="In" />
+    <Parameter Name="category_id" Type="int" Mode="In" />
+    <Parameter Name="tier_id" Type="int" Mode="In" />
+    <Parameter Name="ench_lvl" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Tier_Load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="User_check" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+    <Parameter Name="pass" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="User_reg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="user_name" Type="nvarchar" Mode="In" />
+    <Parameter Name="user_pass" Type="nvarchar" Mode="In" />
+    <Parameter Name="user_email" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="Хранилище WannaTradeModelContainer">
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tier" EntityType="Self.Tier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Sale" EntityType="Self.Sale" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Sale].[sale_id] AS [sale_id], 
+    [Sale].[sale_request_id] AS [sale_request_id]
+    FROM [dbo].[Sale] AS [Sale]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+@Styles.Render("~/Content/src/style.css")
+<div class="login_area">
+    <h1 class="text_center">WannaTrade</h1>
+    <h2 class="text_center">Вход</h2>
+    <div class="login_win">
+        <br>
+        <p class="text_center">Логин</p>
+        <input type="text" id="nameIn" name="nameIn" />
+        <p class="text_center">Пароль</p>
+        <input type="password" id="passIn" name="passIn" />
+        <br><br>
+        <table class="table1">
+            <tr VALIGN="top">
+                <td>
+                    <input class="buttonAdd" type="submit" value="Вход" onClick="login()">
+                </td>
+                <td>
+                    <input class="buttonAdd" type="submit" value="Регистрация" onClick="registration()">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    document.cookie = "user=;";
+    //alert(document.cookie);
+    function registration() {
+        document.location = "Registration";
+    }
+    function login() {
+        let sendData = {
+            user_name: document.querySelector('#nameIn').value,
+            user_pass: document.querySelector('#passIn').value
+        }
+        sendData = JSON.stringify(sendData);
+        $.ajax({
+            url: '/Home/CheckPas/',
+            type: "POST",
+            data: { sendData: sendData }
+
+        }).done(function (data) {
+            if (data[0] == 0) {
+                alert("Неверный пароль, повторите попытку");
+            }
+            else {
+                document.cookie = "user=" + document.querySelector('#nameIn').value + ";max-age=3600"
+                document.location = "Main";
+            }
+            })
+    }
+    </script>

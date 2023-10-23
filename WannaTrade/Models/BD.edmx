@@ -1,0 +1,671 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище WannaTradeModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="category_group_id" Type="int" Nullable="false" />
+          <Property Name="category_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="group_id" />
+          </Key>
+          <Property Name="group_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="group_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="item_tier_id" Type="int" Nullable="false" />
+          <Property Name="item_category_id" Type="int" Nullable="false" />
+          <Property Name="item_ench_lvl" Type="int" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="message_id" />
+          </Key>
+          <Property Name="message_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="message_sender_id" Type="int" Nullable="false" />
+          <Property Name="message_reciever_id" Type="int" Nullable="false" />
+          <Property Name="message_value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="message_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="request_id" />
+          </Key>
+          <Property Name="request_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="request_item_id" Type="int" Nullable="false" />
+          <Property Name="request_number" Type="int" Nullable="false" />
+          <Property Name="request_price" Type="int" Nullable="false" />
+          <Property Name="request_seller_id" Type="int" Nullable="false" />
+          <Property Name="request_is_on_sale" Type="bit" Nullable="false" />
+          <Property Name="request_buyer_id" Type="int" />
+          <Property Name="request_is_seller_confirmed" Type="bit" />
+          <Property Name="request_is_buyer_confirmed" Type="bit" />
+          <Property Name="request_status" Type="nvarchar" MaxLength="50" />
+          <Property Name="request_creation_date" Type="datetime" />
+          <Property Name="request_accept_date" Type="datetime" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "WannaTrade.dbo.Sale" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="sale_id" />
+            <PropertyRef Name="sale_request_id" />
+          </Key>
+          <Property Name="sale_id" Type="int" Nullable="false" />
+          <Property Name="sale_request_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tier">
+          <Key>
+            <PropertyRef Name="tier_id" />
+          </Key>
+          <Property Name="tier_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tier_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="user_pass" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="user_email" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Function Name="Buy_Confirm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="request_id" Type="int" Mode="In" />
+          <Parameter Name="cass" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Category_load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="group_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Group_load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Items_load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_tier" Type="int" Mode="In" />
+          <Parameter Name="item_price" Type="int" Mode="In" />
+          <Parameter Name="item_group" Type="int" Mode="In" />
+          <Parameter Name="item_category" Type="int" Mode="In" />
+          <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Items_load_Buys" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_tier" Type="int" Mode="In" />
+          <Parameter Name="item_price" Type="int" Mode="In" />
+          <Parameter Name="item_group" Type="int" Mode="In" />
+          <Parameter Name="item_category" Type="int" Mode="In" />
+          <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Items_load_Sales" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_tier" Type="int" Mode="In" />
+          <Parameter Name="item_price" Type="int" Mode="In" />
+          <Parameter Name="item_group" Type="int" Mode="In" />
+          <Parameter Name="item_category" Type="int" Mode="In" />
+          <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Items_load_Sales_Gen" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="item_tier" Type="int" Mode="In" />
+          <Parameter Name="item_price" Type="int" Mode="In" />
+          <Parameter Name="item_group" Type="int" Mode="In" />
+          <Parameter Name="item_category" Type="int" Mode="In" />
+          <Parameter Name="item_ench_lvl" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sale_Add" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="category_id" Type="int" Mode="In" />
+          <Parameter Name="tier_id" Type="int" Mode="In" />
+          <Parameter Name="request_number" Type="int" Mode="In" />
+          <Parameter Name="request_price" Type="int" Mode="In" />
+          <Parameter Name="ench_lvl" Type="int" Mode="In" />
+          <Parameter Name="request_seller" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="Sale_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="request_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sale_Ins" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="request_item_id" Type="int" Mode="In" />
+          <Parameter Name="request_number" Type="int" Mode="In" />
+          <Parameter Name="request_price" Type="int" Mode="In" />
+          <Parameter Name="request_seller_id" Type="int" Mode="In" />
+          <Parameter Name="request_buyer" Type="nvarchar" Mode="In" />
+          <Parameter Name="request_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Stats_Get" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="timecase" Type="int" Mode="In" />
+          <Parameter Name="request_item_id" Type="int" Mode="In" />
+          <Parameter Name="category_id" Type="int" Mode="In" />
+          <Parameter Name="tier_id" Type="int" Mode="In" />
+          <Parameter Name="ench_lvl" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Tier_Load" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="User_check" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_login" Type="nvarchar" Mode="In" />
+          <Parameter Name="pass" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="User_reg" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="user_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="user_pass" Type="nvarchar" Mode="In" />
+          <Parameter Name="user_email" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="Хранилище WannaTradeModelContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tier" EntityType="Self.Tier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sale" EntityType="Self.Sale" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Sale].[sale_id] AS [sale_id], 
+    [Sale].[sale_request_id] AS [sale_request_id]
+    FROM [dbo].[Sale] AS [Sale]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WannaTradeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="category_id" />
+          </Key>
+          <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="category_group_id" Type="Int32" Nullable="false" />
+          <Property Name="category_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="group_id" />
+          </Key>
+          <Property Name="group_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="group_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="item_tier_id" Type="Int32" Nullable="false" />
+          <Property Name="item_category_id" Type="Int32" Nullable="false" />
+          <Property Name="item_ench_lvl" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="request_id" />
+          </Key>
+          <Property Name="request_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="request_item_id" Type="Int32" Nullable="false" />
+          <Property Name="request_number" Type="Int32" Nullable="false" />
+          <Property Name="request_price" Type="Int32" Nullable="false" />
+          <Property Name="request_seller_id" Type="Int32" Nullable="false" />
+          <Property Name="request_is_on_sale" Type="Boolean" Nullable="false" />
+          <Property Name="request_buyer_id" Type="Int32" />
+          <Property Name="request_is_seller_confirmed" Type="Boolean" />
+          <Property Name="request_is_buyer_confirmed" Type="Boolean" />
+          <Property Name="request_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="request_creation_date" Type="DateTime" Precision="3" />
+          <Property Name="request_accept_date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Tier">
+          <Key>
+            <PropertyRef Name="tier_id" />
+          </Key>
+          <Property Name="tier_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tier_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="user_pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="user_email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="sale_id" />
+            <PropertyRef Name="sale_request_id" />
+          </Key>
+          <Property Name="sale_id" Type="Int32" Nullable="false" />
+          <Property Name="sale_request_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="WannaTradeEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="Self.Category" />
+          <EntitySet Name="Group" EntityType="Self.Group" />
+          <EntitySet Name="Item" EntityType="Self.Item" />
+          <EntitySet Name="Request" EntityType="Self.Request" />
+          <EntitySet Name="Tier" EntityType="Self.Tier" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="Sale" EntityType="Self.Sale" />
+          <FunctionImport Name="User_check" ReturnType="Collection(Int32)">
+            <Parameter Name="user_login" Mode="In" Type="String" />
+            <Parameter Name="pass" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="User_reg" ReturnType="Collection(Int32)">
+            <Parameter Name="user_name" Mode="In" Type="String" />
+            <Parameter Name="user_pass" Mode="In" Type="String" />
+            <Parameter Name="user_email" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Message" EntityType="WannaTradeModel.Message" />
+          <FunctionImport Name="Items_load" ReturnType="Collection(WannaTradeModel.Items_load_Result)">
+            <Parameter Name="user_login" Mode="In" Type="String" />
+            <Parameter Name="item_name" Mode="In" Type="String" />
+            <Parameter Name="item_tier" Mode="In" Type="Int32" />
+            <Parameter Name="item_price" Mode="In" Type="Int32" />
+            <Parameter Name="item_group" Mode="In" Type="Int32" />
+            <Parameter Name="item_category" Mode="In" Type="Int32" />
+            <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Category_load" ReturnType="Collection(WannaTradeModel.Category_load_Result)">
+          <Parameter Name="group_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Group_load" ReturnType="Collection(WannaTradeModel.Group_load_Result)" />
+          <FunctionImport Name="Tier_Load" ReturnType="Collection(WannaTradeModel.Tier_Load_Result)" />
+          <FunctionImport Name="Sale_Ins" ReturnType="Collection(Int32)">
+            <Parameter Name="request_item_id" Mode="In" Type="Int32" />
+            <Parameter Name="request_number" Mode="In" Type="Int32" />
+            <Parameter Name="request_price" Mode="In" Type="Int32" />
+            <Parameter Name="request_seller_id" Mode="In" Type="Int32" />
+            <Parameter Name="request_buyer" Mode="In" Type="String" />
+            <Parameter Name="request_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Items_load_Buys" ReturnType="Collection(WannaTradeModel.Items_load_Buys_Result)">
+            <Parameter Name="user_login" Mode="In" Type="String" />
+            <Parameter Name="item_name" Mode="In" Type="String" />
+            <Parameter Name="item_tier" Mode="In" Type="Int32" />
+            <Parameter Name="item_price" Mode="In" Type="Int32" />
+            <Parameter Name="item_group" Mode="In" Type="Int32" />
+            <Parameter Name="item_category" Mode="In" Type="Int32" />
+            <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Items_load_Sales" ReturnType="Collection(WannaTradeModel.Items_load_Sales_Result)">
+            <Parameter Name="user_login" Mode="In" Type="String" />
+            <Parameter Name="item_name" Mode="In" Type="String" />
+            <Parameter Name="item_tier" Mode="In" Type="Int32" />
+            <Parameter Name="item_price" Mode="In" Type="Int32" />
+            <Parameter Name="item_group" Mode="In" Type="Int32" />
+            <Parameter Name="item_category" Mode="In" Type="Int32" />
+            <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Items_load_Sales_Gen" ReturnType="Collection(WannaTradeModel.Items_load_Sales_Gen_Result)">
+            <Parameter Name="user_login" Mode="In" Type="String" />
+            <Parameter Name="item_name" Mode="In" Type="String" />
+            <Parameter Name="item_tier" Mode="In" Type="Int32" />
+            <Parameter Name="item_price" Mode="In" Type="Int32" />
+            <Parameter Name="item_group" Mode="In" Type="Int32" />
+            <Parameter Name="item_category" Mode="In" Type="Int32" />
+            <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Buy_Confirm">
+            <Parameter Name="request_id" Mode="In" Type="Int32" />
+            <Parameter Name="cass" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Sale_Add" ReturnType="Collection(Int32)">
+            <Parameter Name="category_id" Mode="In" Type="Int32" />
+            <Parameter Name="tier_id" Mode="In" Type="Int32" />
+            <Parameter Name="request_number" Mode="In" Type="Int32" />
+            <Parameter Name="request_price" Mode="In" Type="Int32" />
+            <Parameter Name="ench_lvl" Mode="In" Type="Int32" />
+            <Parameter Name="request_seller" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Sale_Delete" ReturnType="Collection(Int32)">
+          <Parameter Name="request_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Stats_Get" ReturnType="Collection(WannaTradeModel.Stats_Get_Result)">
+            <Parameter Name="timecase" Mode="In" Type="Int32" />
+            <Parameter Name="request_item_id" Mode="In" Type="Int32" />
+            <Parameter Name="category_id" Mode="In" Type="Int32" />
+            <Parameter Name="tier_id" Mode="In" Type="Int32" />
+            <Parameter Name="ench_lvl" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="message_id" />
+          </Key>
+          <Property Name="message_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="message_sender_id" Type="Int32" Nullable="false" />
+          <Property Name="message_reciever_id" Type="Int32" Nullable="false" />
+          <Property Name="message_value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <ComplexType Name="Items_load_Result">
+          <Property Type="Int32" Name="request_number" Nullable="false" />
+          <Property Type="Int32" Name="request_price" Nullable="false" />
+          <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="request_id" Nullable="false" />
+          <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="item_id" Nullable="true" />
+          <Property Type="Int32" Name="tier_id" Nullable="true" />
+          <Property Type="Int32" Name="category_id" Nullable="true" />
+          <Property Type="Int32" Name="group_id" Nullable="true" />
+          <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+          <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+          <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Category_load_Result">
+          <Property Type="Int32" Name="category_id" Nullable="false" />
+          <Property Type="Int32" Name="category_group_id" Nullable="false" />
+          <Property Type="String" Name="category_name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Group_load_Result">
+          <Property Type="Int32" Name="group_id" Nullable="false" />
+          <Property Type="String" Name="group_name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Tier_Load_Result">
+          <Property Type="Int32" Name="tier_id" Nullable="false" />
+          <Property Type="String" Name="tier_name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="Items_load_Buys_Result">
+          <Property Type="Int32" Name="request_id" Nullable="false" />
+          <Property Type="Int32" Name="request_number" Nullable="false" />
+          <Property Type="Int32" Name="request_price" Nullable="false" />
+          <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+          <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+          <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="item_id" Nullable="true" />
+          <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="tier_id" Nullable="true" />
+          <Property Type="Int32" Name="category_id" Nullable="true" />
+          <Property Type="Int32" Name="group_id" Nullable="true" />
+          <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Items_load_Sales_Result">
+          <Property Type="Int32" Name="request_id" Nullable="false" />
+          <Property Type="Int32" Name="request_number" Nullable="false" />
+          <Property Type="Int32" Name="request_price" Nullable="false" />
+          <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+          <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+          <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="item_id" Nullable="true" />
+          <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="tier_id" Nullable="true" />
+          <Property Type="Int32" Name="category_id" Nullable="true" />
+          <Property Type="Int32" Name="group_id" Nullable="true" />
+          <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Items_load_Sales_Gen_Result">
+          <Property Type="Int32" Name="request_id" Nullable="false" />
+          <Property Type="Int32" Name="request_number" Nullable="false" />
+          <Property Type="Int32" Name="request_price" Nullable="false" />
+          <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+          <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+          <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="item_id" Nullable="true" />
+          <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="tier_id" Nullable="true" />
+          <Property Type="Int32" Name="category_id" Nullable="true" />
+          <Property Type="Int32" Name="group_id" Nullable="true" />
+          <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Stats_Get_Result">
+          <Property Type="String" Name="x" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="y" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище WannaTradeModelContainer" CdmEntityContainer="WannaTradeEntities1">
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="WannaTradeModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="category_group_id" ColumnName="category_group_id" />
+                <ScalarProperty Name="category_name" ColumnName="category_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Group">
+            <EntityTypeMapping TypeName="WannaTradeModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="group_name" ColumnName="group_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Item">
+            <EntityTypeMapping TypeName="WannaTradeModel.Item">
+              <MappingFragment StoreEntitySet="Item">
+                <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="item_tier_id" ColumnName="item_tier_id" />
+                <ScalarProperty Name="item_category_id" ColumnName="item_category_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Request">
+            <EntityTypeMapping TypeName="WannaTradeModel.Request">
+              <MappingFragment StoreEntitySet="Request">
+                <ScalarProperty Name="request_accept_date" ColumnName="request_accept_date" />
+                <ScalarProperty Name="request_creation_date" ColumnName="request_creation_date" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="request_item_id" ColumnName="request_item_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_price" ColumnName="request_price" />
+                <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+                <ScalarProperty Name="request_is_on_sale" ColumnName="request_is_on_sale" />
+                <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+                <ScalarProperty Name="request_is_seller_confirmed" ColumnName="request_is_seller_confirmed" />
+                <ScalarProperty Name="request_is_buyer_confirmed" ColumnName="request_is_buyer_confirmed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tier">
+            <EntityTypeMapping TypeName="WannaTradeModel.Tier">
+              <MappingFragment StoreEntitySet="Tier">
+                <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+                <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="WannaTradeModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="user_pass" ColumnName="user_pass" />
+                <ScalarProperty Name="user_email" ColumnName="user_email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sale">
+            <EntityTypeMapping TypeName="WannaTradeModel.Sale">
+              <MappingFragment StoreEntitySet="Sale">
+                <ScalarProperty Name="sale_id" ColumnName="sale_id" />
+                <ScalarProperty Name="sale_request_id" ColumnName="sale_request_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="User_check" FunctionName="Хранилище WannaTradeModel.User_check" />
+          <FunctionImportMapping FunctionImportName="User_reg" FunctionName="Хранилище WannaTradeModel.User_reg" />
+          <EntitySetMapping Name="Message">
+            <EntityTypeMapping TypeName="WannaTradeModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="message_date" ColumnName="message_date" />
+                <ScalarProperty Name="message_value" ColumnName="message_value" />
+                <ScalarProperty Name="message_reciever_id" ColumnName="message_reciever_id" />
+                <ScalarProperty Name="message_sender_id" ColumnName="message_sender_id" />
+                <ScalarProperty Name="message_id" ColumnName="message_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Items_load" FunctionName="Хранилище WannaTradeModel.Items_load" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Result">
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_price" ColumnName="request_price" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+                <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+                <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+                <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Category_load" FunctionName="Хранилище WannaTradeModel.Category_load">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Category_load_Result">
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="category_group_id" ColumnName="category_group_id" />
+                <ScalarProperty Name="category_name" ColumnName="category_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Group_load" FunctionName="Хранилище WannaTradeModel.Group_load">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Group_load_Result">
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="group_name" ColumnName="group_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Tier_Load" FunctionName="Хранилище WannaTradeModel.Tier_Load">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Tier_Load_Result">
+                <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+                <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sale_Ins" FunctionName="Хранилище WannaTradeModel.Sale_Ins" />
+          <FunctionImportMapping FunctionImportName="Items_load_Buys" FunctionName="Хранилище WannaTradeModel.Items_load_Buys">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Buys_Result">
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_price" ColumnName="request_price" />
+                <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+                <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+                <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+                <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Items_load_Sales" FunctionName="Хранилище WannaTradeModel.Items_load_Sales">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Sales_Result">
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_price" ColumnName="request_price" />
+                <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+                <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+                <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+                <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Items_load_Sales_Gen" FunctionName="Хранилище WannaTradeModel.Items_load_Sales_Gen">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Items_load_Sales_Gen_Result">
+                <ScalarProperty Name="request_id" ColumnName="request_id" />
+                <ScalarProperty Name="request_number" ColumnName="request_number" />
+                <ScalarProperty Name="request_price" ColumnName="request_price" />
+                <ScalarProperty Name="request_seller_id" ColumnName="request_seller_id" />
+                <ScalarProperty Name="request_status" ColumnName="request_status" />
+                <ScalarProperty Name="request_buyer_id" ColumnName="request_buyer_id" />
+                <ScalarProperty Name="buyer_name" ColumnName="buyer_name" />
+                <ScalarProperty Name="seller_name" ColumnName="seller_name" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="tier_name" ColumnName="tier_name" />
+                <ScalarProperty Name="tier_id" ColumnName="tier_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="item_ench_lvl" ColumnName="item_ench_lvl" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Buy_Confirm" FunctionName="Хранилище WannaTradeModel.Buy_Confirm" />
+          <FunctionImportMapping FunctionImportName="Sale_Add" FunctionName="Хранилище WannaTradeModel.Sale_Add" />
+          <FunctionImportMapping FunctionImportName="Sale_Delete" FunctionName="Хранилище WannaTradeModel.Sale_Delete" />
+          <FunctionImportMapping FunctionImportName="Stats_Get" FunctionName="Хранилище WannaTradeModel.Stats_Get" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WannaTradeModel.Stats_Get_Result">
+                <ScalarProperty Name="x" ColumnName="x" />
+                <ScalarProperty Name="y" ColumnName="y" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

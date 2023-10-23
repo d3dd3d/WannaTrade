@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "About";
+    Layout = null;
+}
+@Styles.Render("~/Content/src/style.css")
+<div class="login_area">
+    <h1 class="text_center">WannaTrade</h1>
+    <h2 class="text_center">Вход</h2>
+    <div class="reg_win">
+        <table class="tablereg">
+            <tr VALIGN="top">
+                <td>
+                    <p class="text_left">Логин</p>
+                </td>
+                <td>
+                    <input type="text" id="nameIn" name="nameIn" />
+                </td>
+            </tr>
+            <tr VALIGN="top">
+                <td>
+                    <p class="text_left">Email</p>
+                </td>
+                <td>
+                    <input type="email" id="emailIn" name="emailIn" />
+                </td>
+            </tr>
+            <tr VALIGN="top">
+                <td>
+                    <p class="text_left">Пароль</p>
+                </td>
+                <td>
+                    <input type="password" id="passIn" name="passIn" />
+                </td>
+            </tr>
+            <tr VALIGN="top">
+                <td>
+                    <p class="text_left">Повторите пароль</p>
+                </td>
+                <td>
+                    <input type="password" id="pass2In" name="pass2In" />
+                </td>
+            </tr>
+        </table>
+        <table class="tableBut">
+            <tr VALIGN="top">
+                <td>
+                    <input class="buttonAdd" type="submit" value="Назад" onClick="back()">
+                </td>
+                <td>
+                    <input class="buttonAdd" type="submit" value="Регистрация" onClick="registration()">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    document.cookie = "user=;";
+    //alert(document.cookie);
+    function back() {
+        document.location = "Login";
+    }
+    function registration() {
+        if (document.querySelector('#passIn').value == document.querySelector('#pass2In').value) {
+            let sendData = {
+                user_name: document.querySelector('#nameIn').value,
+                user_email: document.querySelector('#emailIn').value,
+                user_pass: document.querySelector('#passIn').value
+            }
+            sendData = JSON.stringify(sendData);
+            $.ajax({
+                // добавляем новую строку в таблицу:
+                url: '/Home/UserReg/',
+                type: "POST",
+                data: { sendData: sendData }
+
+            }).done(function (data) {
+                if (data[0] == 1) {
+                    alert("Регистрация успешна, можете войти по введеным данным");
+                    document.location = "Login";
+                }
+                else if (data[0] == 2) {
+                    alert("Данный email уже занят");
+                }
+                else if (data[0] == 3) {
+                    alert("Данный логин уже занят");
+                }
+            })
+        }
+        else {
+            alert("Пароли не совпадают");
+        }
+    }
+</script>

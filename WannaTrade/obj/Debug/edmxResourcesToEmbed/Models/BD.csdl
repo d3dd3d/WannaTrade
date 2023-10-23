@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WannaTradeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_group_id" Type="Int32" Nullable="false" />
+    <Property Name="category_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Group">
+    <Key>
+      <PropertyRef Name="group_id" />
+    </Key>
+    <Property Name="group_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="group_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="item_id" />
+    </Key>
+    <Property Name="item_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="item_tier_id" Type="Int32" Nullable="false" />
+    <Property Name="item_category_id" Type="Int32" Nullable="false" />
+    <Property Name="item_ench_lvl" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Request">
+    <Key>
+      <PropertyRef Name="request_id" />
+    </Key>
+    <Property Name="request_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="request_item_id" Type="Int32" Nullable="false" />
+    <Property Name="request_number" Type="Int32" Nullable="false" />
+    <Property Name="request_price" Type="Int32" Nullable="false" />
+    <Property Name="request_seller_id" Type="Int32" Nullable="false" />
+    <Property Name="request_is_on_sale" Type="Boolean" Nullable="false" />
+    <Property Name="request_buyer_id" Type="Int32" />
+    <Property Name="request_is_seller_confirmed" Type="Boolean" />
+    <Property Name="request_is_buyer_confirmed" Type="Boolean" />
+    <Property Name="request_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="request_creation_date" Type="DateTime" Precision="3" />
+    <Property Name="request_accept_date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Tier">
+    <Key>
+      <PropertyRef Name="tier_id" />
+    </Key>
+    <Property Name="tier_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tier_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="user_pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="user_email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Sale">
+    <Key>
+      <PropertyRef Name="sale_id" />
+      <PropertyRef Name="sale_request_id" />
+    </Key>
+    <Property Name="sale_id" Type="Int32" Nullable="false" />
+    <Property Name="sale_request_id" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="WannaTradeEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Category" EntityType="Self.Category" />
+    <EntitySet Name="Group" EntityType="Self.Group" />
+    <EntitySet Name="Item" EntityType="Self.Item" />
+    <EntitySet Name="Request" EntityType="Self.Request" />
+    <EntitySet Name="Tier" EntityType="Self.Tier" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <EntitySet Name="Sale" EntityType="Self.Sale" />
+    <FunctionImport Name="User_check" ReturnType="Collection(Int32)">
+      <Parameter Name="user_login" Mode="In" Type="String" />
+      <Parameter Name="pass" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="User_reg" ReturnType="Collection(Int32)">
+      <Parameter Name="user_name" Mode="In" Type="String" />
+      <Parameter Name="user_pass" Mode="In" Type="String" />
+      <Parameter Name="user_email" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="Message" EntityType="WannaTradeModel.Message" />
+    <FunctionImport Name="Items_load" ReturnType="Collection(WannaTradeModel.Items_load_Result)">
+      <Parameter Name="user_login" Mode="In" Type="String" />
+      <Parameter Name="item_name" Mode="In" Type="String" />
+      <Parameter Name="item_tier" Mode="In" Type="Int32" />
+      <Parameter Name="item_price" Mode="In" Type="Int32" />
+      <Parameter Name="item_group" Mode="In" Type="Int32" />
+      <Parameter Name="item_category" Mode="In" Type="Int32" />
+      <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Category_load" ReturnType="Collection(WannaTradeModel.Category_load_Result)">
+      <Parameter Name="group_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Group_load" ReturnType="Collection(WannaTradeModel.Group_load_Result)" />
+    <FunctionImport Name="Tier_Load" ReturnType="Collection(WannaTradeModel.Tier_Load_Result)" />
+    <FunctionImport Name="Sale_Ins" ReturnType="Collection(Int32)">
+      <Parameter Name="request_item_id" Mode="In" Type="Int32" />
+      <Parameter Name="request_number" Mode="In" Type="Int32" />
+      <Parameter Name="request_price" Mode="In" Type="Int32" />
+      <Parameter Name="request_seller_id" Mode="In" Type="Int32" />
+      <Parameter Name="request_buyer" Mode="In" Type="String" />
+      <Parameter Name="request_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Items_load_Buys" ReturnType="Collection(WannaTradeModel.Items_load_Buys_Result)">
+      <Parameter Name="user_login" Mode="In" Type="String" />
+      <Parameter Name="item_name" Mode="In" Type="String" />
+      <Parameter Name="item_tier" Mode="In" Type="Int32" />
+      <Parameter Name="item_price" Mode="In" Type="Int32" />
+      <Parameter Name="item_group" Mode="In" Type="Int32" />
+      <Parameter Name="item_category" Mode="In" Type="Int32" />
+      <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Items_load_Sales" ReturnType="Collection(WannaTradeModel.Items_load_Sales_Result)">
+      <Parameter Name="user_login" Mode="In" Type="String" />
+      <Parameter Name="item_name" Mode="In" Type="String" />
+      <Parameter Name="item_tier" Mode="In" Type="Int32" />
+      <Parameter Name="item_price" Mode="In" Type="Int32" />
+      <Parameter Name="item_group" Mode="In" Type="Int32" />
+      <Parameter Name="item_category" Mode="In" Type="Int32" />
+      <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Items_load_Sales_Gen" ReturnType="Collection(WannaTradeModel.Items_load_Sales_Gen_Result)">
+      <Parameter Name="user_login" Mode="In" Type="String" />
+      <Parameter Name="item_name" Mode="In" Type="String" />
+      <Parameter Name="item_tier" Mode="In" Type="Int32" />
+      <Parameter Name="item_price" Mode="In" Type="Int32" />
+      <Parameter Name="item_group" Mode="In" Type="Int32" />
+      <Parameter Name="item_category" Mode="In" Type="Int32" />
+      <Parameter Name="item_ench_lvl" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Buy_Confirm">
+      <Parameter Name="request_id" Mode="In" Type="Int32" />
+      <Parameter Name="cass" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Sale_Add" ReturnType="Collection(Int32)">
+      <Parameter Name="category_id" Mode="In" Type="Int32" />
+      <Parameter Name="tier_id" Mode="In" Type="Int32" />
+      <Parameter Name="request_number" Mode="In" Type="Int32" />
+      <Parameter Name="request_price" Mode="In" Type="Int32" />
+      <Parameter Name="ench_lvl" Mode="In" Type="Int32" />
+      <Parameter Name="request_seller" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Sale_Delete" ReturnType="Collection(Int32)">
+      <Parameter Name="request_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Stats_Get" ReturnType="Collection(WannaTradeModel.Stats_Get_Result)">
+      <Parameter Name="timecase" Mode="In" Type="Int32" />
+      <Parameter Name="request_item_id" Mode="In" Type="Int32" />
+      <Parameter Name="category_id" Mode="In" Type="Int32" />
+      <Parameter Name="tier_id" Mode="In" Type="Int32" />
+      <Parameter Name="ench_lvl" Mode="In" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="Message">
+    <Key>
+      <PropertyRef Name="message_id" />
+    </Key>
+    <Property Name="message_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="message_sender_id" Type="Int32" Nullable="false" />
+    <Property Name="message_reciever_id" Type="Int32" Nullable="false" />
+    <Property Name="message_value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="message_date" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <ComplexType Name="Items_load_Result">
+    <Property Type="Int32" Name="request_number" Nullable="false" />
+    <Property Type="Int32" Name="request_price" Nullable="false" />
+    <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="request_id" Nullable="false" />
+    <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="item_id" Nullable="true" />
+    <Property Type="Int32" Name="tier_id" Nullable="true" />
+    <Property Type="Int32" Name="category_id" Nullable="true" />
+    <Property Type="Int32" Name="group_id" Nullable="true" />
+    <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+    <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+    <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="Category_load_Result">
+    <Property Type="Int32" Name="category_id" Nullable="false" />
+    <Property Type="Int32" Name="category_group_id" Nullable="false" />
+    <Property Type="String" Name="category_name" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="Group_load_Result">
+    <Property Type="Int32" Name="group_id" Nullable="false" />
+    <Property Type="String" Name="group_name" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="Tier_Load_Result">
+    <Property Type="Int32" Name="tier_id" Nullable="false" />
+    <Property Type="String" Name="tier_name" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="Items_load_Buys_Result">
+    <Property Type="Int32" Name="request_id" Nullable="false" />
+    <Property Type="Int32" Name="request_number" Nullable="false" />
+    <Property Type="Int32" Name="request_price" Nullable="false" />
+    <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+    <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+    <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="item_id" Nullable="true" />
+    <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="tier_id" Nullable="true" />
+    <Property Type="Int32" Name="category_id" Nullable="true" />
+    <Property Type="Int32" Name="group_id" Nullable="true" />
+    <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="Items_load_Sales_Result">
+    <Property Type="Int32" Name="request_id" Nullable="false" />
+    <Property Type="Int32" Name="request_number" Nullable="false" />
+    <Property Type="Int32" Name="request_price" Nullable="false" />
+    <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+    <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+    <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="item_id" Nullable="true" />
+    <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="tier_id" Nullable="true" />
+    <Property Type="Int32" Name="category_id" Nullable="true" />
+    <Property Type="Int32" Name="group_id" Nullable="true" />
+    <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="Items_load_Sales_Gen_Result">
+    <Property Type="Int32" Name="request_id" Nullable="false" />
+    <Property Type="Int32" Name="request_number" Nullable="false" />
+    <Property Type="Int32" Name="request_price" Nullable="false" />
+    <Property Type="Int32" Name="request_seller_id" Nullable="false" />
+    <Property Type="String" Name="request_status" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="request_buyer_id" Nullable="true" />
+    <Property Type="String" Name="buyer_name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="seller_name" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="item_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="item_id" Nullable="true" />
+    <Property Type="String" Name="tier_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="tier_id" Nullable="true" />
+    <Property Type="Int32" Name="category_id" Nullable="true" />
+    <Property Type="Int32" Name="group_id" Nullable="true" />
+    <Property Type="Int32" Name="item_ench_lvl" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="Stats_Get_Result">
+    <Property Type="String" Name="x" Nullable="true" MaxLength="30" />
+    <Property Type="Int32" Name="y" Nullable="true" />
+  </ComplexType>
+</Schema>
